@@ -1,0 +1,149 @@
+import argparse
+import sys
+import time
+from pathlib import Path
+
+from scanner.rtl_power_runner import run_rtl_power_scan
+from analysis.activity_mapper import load_rtl_power_csv, summarize_activity
+from analysis.signal_detector import detect_signals_of_interest
+from reports.summary_report import save_text_summary
+
+
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(
+        description="Scan a user-defined RF range with rtl_power and generate a readable summary."
+    )
+
+    parser.add_argument("--start", type=float, required=True, help="Start frequency in MHz, e.g. 462.5625")
+    parser.add_argument("--end", type=float, required=True, help="End frequency in MHz, e.g. 462.7125")
+    parser.add_argument("--gain", type=float, default=20.0, help="Tuner gain in dB")
+    parser.add_argument("--duration", type=int, default=15, help="Scan duration in seconds for one cycle")
+    parser.add_argument("--interval", type=int, default=10, help="rtl_power reporting interval in seconds")
+    parser.add_argument("--bin-size", type=int, default=12500, help="FFT bin size in Hz")
+    parser.add_argument("--top", type=int, default=10, help="How many top frequencies to print")
+    parser.add_argument("--live", action="store_true", help="Run continuously until stopped with Ctrl+C")
+    parser.add_argument(
+        "--spike-threshold",
+        type=float,
+        default=-15.0,
+        help="Minimum max power in dB to mark as a possible signal of interest",
+    )
+
+    args = parser.parse_args()
+
+    if args.start >= args.end:
+        parser.error("--start must be lower than --end")
+
+    if args.duration <= 0:
+        parser.error("--duration must be greater than 0")
+
+    if args.interval <= 0:
+        parser.error("--interval must be greater than 0")
+
+    if args.bin_size <= 0:
+        parser.error("--bin-size must be greater than 0")
+
+    if args.top <= 0:
+        parser.error("--top must be greater than 0")
+
+    return args
+
+
+def print_summary(summary: list[dict], top_n: int) -> None:
+    print("\n[+] Top detected frequencies:")
+    if not summary:
+        print("  No data parsed.")
+        return
+
+    for item in summary[:top_n]:
+        print(
+            f"  {item['frequency_mhz']:.6f} MHz | "
+            f"hits={item['hits']} | "
+            f"max={item['max_power_db']} dB | "
+            f"avg={item['avg_power_db']} dB"
+        )
+
+
+def print_signals_of_interest(signals: list[dict]) -> None:
+    print("\n[+] Signals of interest:")
+    if not signals:
+        print("  None above threshold.")
+        return
+
+    for item in signals:
+        print(
+            f"  {item['frequency_mhz']:.6f} MHz | "
+            f"max={item['max_power_db']} dB | "
+            f"reason={item['reason']}"
+        )
+
+
+def run_once(args: argparse.Namespace) -> None:
+    csv_path = run_rtl_power_scan(
+        start_mhz=args.start,
+        end_mhz=args.end,
+        bin_size_hz=args.bin_size,
+        integration_seconds=args.interval,
+        gain=args.gain,
+        output_dir="data/raw",
+        duration_seconds=args.duration,
+    )
+
+    measurements = load_rtl_power_csv(str(csv_path))
+    summary = summarize_activity(measurements)
+    signals = detect_signals_of_interest(summary, spike_threshold_db=args.spike_threshold)
+
+    print(f"\n[*] Raw CSV saved to: {csv_path}")
+    print(f"[*] Measurements parsed: {len(measurements)}")
+    print(f"[*] Unique frequency bins summarized: {len(summary)}")
+
+    print_summary(summary, args.top)
+    print_signals_of_interest(signals)
+
+    report_path = save_text_summary(
+        summary=summary,
+        signals_of_interest=signals,
+        start_mhz=args.start,
+        end_mhz=args.end,
+        duration_seconds=args.duration,
+        output_dir="output",
+    )
+
+    print(f"\n[+] Summary report saved to: {report_path}")
+
+
+def main() -> int:
+    args = parse_args()
+
+    print("[*] RTL Smart Scan")
+    print(f"[*] Range: {args.start} MHz -> {args.end} MHz")
+    print(f"[*] Gain: {args.gain} dB")
+    print(f"[*] Duration: {args.duration} seconds")
+    print(f"[*] Interval: {args.interval} seconds")
+    print(f"[*] Bin size: {args.bin_size} Hz")
+    print(f"[*] Mode: {'live' if args.live else 'single run'}")
+
+    try:
+        if args.live:
+            cycle = 1
+            while True:
+                print(f"\n{'=' * 60}")
+                print(f"[*] Live cycle #{cycle}")
+                run_once(args)
+                cycle += 1
+                time.sleep(1)
+        else:
+            run_once(args)
+
+    except KeyboardInterrupt:
+        print("\n[!] Stopped by user.")
+        return 0
+    except Exception as exc:
+        print(f"\n[!] Error: {exc}")
+        return 1
+
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
