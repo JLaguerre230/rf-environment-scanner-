@@ -101,32 +101,16 @@ python3 main.py --start 462.0 --end 463.0 --duration 120
 
 ---
 
-### Automatic listening when signal is detected
-
-```
-python3 main.py --band frs --duration 180 --listen --auto
-```
-
----
-
 ### Adjust detection threshold
 
 ```
-python3 main.py --band frs --duration 180 --listen --auto --threshold -35
+python3 main.py --band frs --listen --auto --threshold -35
 ```
 
 Lower threshold → more sensitive
 Higher threshold → only strong signals trigger listening
 
 ---
-
-### Background scanning mode
-
-Run scan:
-
-```
-python3 main.py --band frs --duration 300 --background
-```
 
 Watch summaries live:
 
