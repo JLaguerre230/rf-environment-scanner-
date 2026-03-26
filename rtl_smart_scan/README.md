@@ -1,3 +1,24 @@
+_______________________________________________________________
+     |                                                               |
+     |    ██████╗ ███████╗    ████████╗ ██████╗  ██████╗ ██╗         |
+     |    ██╔══██╗██╔════╝    ╚══██╔══╝██╔═══██╗██╔═══██╗██║         |
+     |    ██████╔╝█████╗         ██║   ██║   ██║██║   ██║██║         |
+     |    ██╔══██╗██╔══╝         ██║   ██║   ██║██║   ██║██║         |
+     |    ██║  ██║██║            ██║   ╚██████╔╝╚██████╔╝███████╗    |
+     |    ╚═╝  ╚═╝╚═╝            ╚═╝    ╚═════╝  ╚═════╝ ╚══════╝    |
+     |_______________________________________________________________|
+     |                                                               |
+     |  [!] LEGAL DISCLAIMER & USAGE WARNING                         |
+     |                                                               |
+     |  1. MONITORING: Do not intercept or decode private traffic    |
+     |     without explicit permission.                              |
+     |  2. TRANSMITTING: Ensure you are licensed (Ham/Amateur) and   |
+     |     operating within legal frequency/power limits.            |
+     |  3. INTENT: This tool is for educational/testing use only.    |
+     |                                                               |
+     |  "The airwaves are shared, but privacy is a right."           |
+     |_______________________________________________________________|
+
 # RTL Smart Scan
 
 **RTL Smart Scan** is an intelligent RF scanning and signal monitoring tool built for RTL-SDR users.
