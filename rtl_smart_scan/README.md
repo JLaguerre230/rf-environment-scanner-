@@ -13,7 +13,7 @@ The tool is designed for real-world SDR exploration, long-duration monitoring se
 Clone the repository:
 
 ```
-git clone YOUR_REPO_URL
+git clone https://github.com/JLaguerre230/rf-environment-scanner-
 cd rtl_smart_scan
 ```
 
