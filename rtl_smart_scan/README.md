@@ -1,35 +1,6 @@
-_______________________________________________________________
-     |                                                               |
-     |    ██████╗ ███████╗    ████████╗ ██████╗  ██████╗ ██╗         |
-     |    ██╔══██╗██╔════╝    ╚══██╔══╝██╔═══██╗██╔═══██╗██║         |
-     |    ██████╔╝█████╗         ██║   ██║   ██║██║   ██║██║         |
-     |    ██╔══██╗██╔══╝         ██║   ██║   ██║██║   ██║██║         |
-     |    ██║  ██║██║            ██║   ╚██████╔╝╚██████╔╝███████╗    |
-     |    ╚═╝  ╚═╝╚═╝            ╚═╝    ╚═════╝  ╚═════╝ ╚══════╝    |
-     |_______________________________________________________________|
-     |                                                               |
-     |  [!] LEGAL DISCLAIMER & USAGE WARNING                         |
-     |                                                               |
-     |  1. MONITORING: Do not intercept or decode private traffic    |
-     |     without explicit permission.                              |
-     |  2. TRANSMITTING: Ensure you are licensed (Ham/Amateur) and   |
-     |     operating within legal frequency/power limits.            |
-     |  3. INTENT: This tool is for educational/testing use only.    |
-     |                                                               |
-     |  "The airwaves are shared, but privacy is a right."           |
-     |_______________________________________________________________|
 
-# RTL Smart Scan
 
-**RTL Smart Scan** is an intelligent RF scanning and signal monitoring tool built for RTL-SDR users.
-
-It allows operators to scan preset radio bands or custom frequency ranges, detect signal activity, and automatically tune to active transmissions for live listening.
-
-The tool is designed for real-world SDR exploration, long-duration monitoring sessions, and RF environment awareness.
-
----
-
-## 🚀 Installation
+## Installation
 
 Clone the repository:
 
@@ -40,7 +11,7 @@ cd rtl_smart_scan
 
 ---
 
-## 📡 Requirements
+## Requirements
 
 * RTL-SDR compatible dongle
 * Python 3
@@ -56,7 +27,7 @@ sudo apt install rtl-sdr alsa-utils
 
 ---
 
-## ⚡ Recommended Workflow (IMPORTANT)
+## Recommended Workflow (IMPORTANT)
 
 For long scans or remote monitoring (SSH / Raspberry Pi), it is **strongly recommended** to use `tmux`.
 
@@ -82,7 +53,7 @@ tmux attach -t rtlscan
 
 ---
 
-## 🧠 Features
+## Features
 
 * Preset radio band scanning (FRS, MURS, Airband, etc)
 * Custom frequency range scanning
@@ -96,7 +67,7 @@ tmux attach -t rtlscan
 
 ---
 
-## 📊 Usage Examples
+## Usage Examples
 
 ### List available preset bands
 
@@ -141,7 +112,7 @@ watch cat output/latest_summary.txt
 
 ---
 
-## 📡 Supported Preset Bands
+## Supported Preset Bands
 
 * FRS (Family Radio Service)
 * MURS (Multi-Use Radio Service)
@@ -149,30 +120,9 @@ watch cat output/latest_summary.txt
 * UHF Business Radio
 * VHF Business Radio
 
-More presets can easily be added.
 
----
 
-## ⚠️ Notes
 
-Reported frequencies may slightly differ from real channel centers due to FFT bin resolution or tuner offset.
 
-This is normal in wideband SDR scanning.
 
----
-
-## 📜 Disclaimer
-
-This tool is intended for educational SDR use, RF exploration, and lawful spectrum monitoring.
-
-Users must comply with local radio regulations.
-
----
-
-## 🔮 Future Improvements
-
-* Automatic signal recording
-* RF activity heatmaps
-* Persistent intelligence database
-* Real-time waterfall interface
 * Signal classification logic
