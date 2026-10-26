@@ -27,7 +27,7 @@ sudo apt install rtl-sdr alsa-utils
 
 ---
 
-## Recommended Workflow (IMPORTANT)
+## Workflow 
 
 For long scans or remote monitoring (SSH / Raspberry Pi), it is **strongly recommended** to use `tmux`.
 
